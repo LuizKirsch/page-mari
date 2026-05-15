@@ -28,7 +28,7 @@ export default function App() {
     <>
       {loading && <LoadingOverlay />}
 
-      <Navbar />
+      <Navbar onBack={selectedProduct ? () => setSelectedProduct(null) : null} />
 
       {selectedProduct ? (
         <ProductPage product={selectedProduct} onBack={() => setSelectedProduct(null)} />

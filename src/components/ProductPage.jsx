@@ -15,14 +15,6 @@ export default function ProductPage({ product, onBack }) {
 
   return (
     <main className="max-w-5xl mx-auto px-6 py-12">
-      <button
-        onClick={onBack}
-        className="flex items-center gap-2 mb-10 text-xs font-black uppercase tracking-widest hover:opacity-70 transition-opacity"
-        style={{ color: 'rgba(255,255,255,0.5)' }}
-      >
-        <i className="fa-solid fa-arrow-left" /> Voltar ao Catálogo
-      </button>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         {/* Imagem */}
         <div className="rounded-2xl overflow-hidden" style={{ background: '#111' }}>

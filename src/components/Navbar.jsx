@@ -1,10 +1,21 @@
 import { STORE_NAME, WHATSAPP_NUMBER } from '../config';
 
-export default function Navbar() {
+export default function Navbar({ onBack }) {
   return (
     <nav className="fixed top-0 w-full z-[100] glass-header border-b py-4" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
       <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-        <span className="text-2xl font-black tracking-tighter uppercase italic">{STORE_NAME}</span>
+        <div className="flex items-center gap-4">
+          {onBack && (
+            <button
+              onClick={onBack}
+              className="flex items-center gap-2 text-xs font-black uppercase tracking-widest px-3 py-2 rounded-lg hover:bg-white/10 transition-all"
+              style={{ color: 'rgba(255,255,255,0.7)' }}
+            >
+              <i className="fa-solid fa-arrow-left" /> Voltar
+            </button>
+          )}
+          <span className="text-2xl font-black tracking-tighter uppercase italic">{STORE_NAME}</span>
+        </div>
         <a
           href={`https://wa.me/${WHATSAPP_NUMBER}`}
           target="_blank"
