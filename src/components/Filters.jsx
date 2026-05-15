@@ -3,10 +3,12 @@ import { useMemo } from 'react';
 export default function Filters({ products, filters, onChange, onReset }) {
   const { country, league, team } = filters;
 
-  const countries = useMemo(
-    () => [...new Set(products.map((p) => p.country))].sort(),
-    [products]
-  );
+  const countries = useMemo(() => {
+    const all = [...new Set(products.map((p) => p.country))].sort();
+    const idx = all.indexOf('Seleção');
+    if (idx > 0) all.unshift(all.splice(idx, 1)[0]);
+    return all;
+  }, [products]);
 
   const isSelecao = country === 'Seleção';
 
