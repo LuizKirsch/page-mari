@@ -8,19 +8,24 @@ export default function Filters({ products, filters, onChange, onReset }) {
     [products]
   );
 
+  const isSelecao = country === 'Seleção';
+
   const leagues = useMemo(() => {
-    if (country === 'all') return [];
+    if (country === 'all' || isSelecao) return [];
     return [...new Set(products.filter((p) => p.country === country).map((p) => p.league))].sort();
-  }, [products, country]);
+  }, [products, country, isSelecao]);
 
   const teams = useMemo(() => {
+    if (isSelecao && country !== 'all') {
+      return [...new Set(products.filter((p) => p.country === country).map((p) => p.team))].sort();
+    }
     if (league === 'all') return [];
     return [
       ...new Set(
         products.filter((p) => p.country === country && p.league === league).map((p) => p.team)
       ),
     ].sort();
-  }, [products, country, league]);
+  }, [products, country, league, isSelecao]);
 
   function handleCountry(e) {
     onChange({ country: e.target.value, league: 'all', team: 'all' });
@@ -54,7 +59,7 @@ export default function Filters({ products, filters, onChange, onReset }) {
       </div>
 
       <div
-        className="grid grid-cols-1 md:grid-cols-3 gap-4 p-6 rounded-2xl border"
+        className={`grid grid-cols-1 gap-4 p-6 rounded-2xl border ${isSelecao ? 'md:grid-cols-2' : 'md:grid-cols-3'}`}
         style={{ background: '#0a0a0a', borderColor: 'rgba(255,255,255,0.05)' }}
       >
         {/* País */}
@@ -70,38 +75,46 @@ export default function Filters({ products, filters, onChange, onReset }) {
           </select>
         </div>
 
-        {/* Liga */}
-        <div>
-          <label className="block text-[9px] font-black uppercase mb-2 tracking-widest" style={{ color: '#6b7280' }}>
-            02. Selecione a Liga
-          </label>
-          <select
-            className={selectClass}
-            style={selectStyle}
-            value={league}
-            onChange={handleLeague}
-            disabled={country === 'all'}
-          >
-            <option value="all">{country === 'all' ? 'Aguardando País...' : 'Todas as Ligas'}</option>
-            {leagues.map((l) => (
-              <option key={l} value={l}>{l}</option>
-            ))}
-          </select>
-        </div>
+        {/* Liga — escondida quando Seleção */}
+        {!isSelecao && (
+          <div>
+            <label className="block text-[9px] font-black uppercase mb-2 tracking-widest" style={{ color: '#6b7280' }}>
+              02. Selecione a Liga
+            </label>
+            <select
+              className={selectClass}
+              style={selectStyle}
+              value={league}
+              onChange={handleLeague}
+              disabled={country === 'all'}
+            >
+              <option value="all">{country === 'all' ? 'Aguardando País...' : 'Todas as Ligas'}</option>
+              {leagues.map((l) => (
+                <option key={l} value={l}>{l}</option>
+              ))}
+            </select>
+          </div>
+        )}
 
-        {/* Time */}
+        {/* Time / Seleção */}
         <div>
           <label className="block text-[9px] font-black uppercase mb-2 tracking-widest" style={{ color: '#6b7280' }}>
-            03. Selecione o Time
+            {isSelecao ? '02. Selecione a Seleção' : '03. Selecione o Time'}
           </label>
           <select
             className={selectClass}
             style={selectStyle}
             value={team}
             onChange={handleTeam}
-            disabled={league === 'all'}
+            disabled={league === 'all' && !isSelecao}
           >
-            <option value="all">{league === 'all' ? 'Aguardando Liga...' : 'Todos os Times'}</option>
+            <option value="all">
+              {isSelecao
+                ? 'Todas as Seleções'
+                : league === 'all'
+                ? 'Aguardando Liga...'
+                : 'Todos os Times'}
+            </option>
             {teams.map((t) => (
               <option key={t} value={t}>{t}</option>
             ))}
