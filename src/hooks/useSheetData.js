@@ -32,6 +32,8 @@ function parseCSV(csvText) {
   return lines.slice(1).reduce((acc, line) => {
     if (!line.trim()) return acc;
     const cols = splitLine(line);
+    const ativo = clean(cols[10]);
+    if (ativo === '0' || ativo.toLowerCase() === 'false') return acc;
     acc.push({
       name: clean(cols[0]),
       country: clean(cols[1]),
