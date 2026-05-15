@@ -1,6 +1,6 @@
 import { WHATSAPP_NUMBER } from '../config';
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, onClick }) {
   const { name, country, league, team, price, image, sizes = [] } = product;
 
   function buyOnWhatsApp() {
@@ -15,8 +15,9 @@ export default function ProductCard({ product }) {
 
   return (
     <div
-      className="product-card group rounded-2xl p-4 border"
+      className="product-card group rounded-2xl p-4 border cursor-pointer hover:border-white/20 transition-all"
       style={{ background: '#0a0a0a', borderColor: 'rgba(255,255,255,0.05)' }}
+      onClick={onClick}
     >
       <div
         className="rounded-xl overflow-hidden mb-4 relative"

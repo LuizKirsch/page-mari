@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import ProductCard from './ProductCard';
 
-export default function ProductGrid({ products, filters }) {
+export default function ProductGrid({ products, filters, onSelectProduct }) {
   const { country, league, team } = filters;
 
   const filtered = useMemo(() => {
@@ -26,7 +26,7 @@ export default function ProductGrid({ products, filters }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {filtered.map((p, i) => (
-        <ProductCard key={`${p.name}-${i}`} product={p} />
+        <ProductCard key={`${p.name}-${i}`} product={p} onClick={() => onSelectProduct(p)} />
       ))}
     </div>
   );
