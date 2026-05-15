@@ -1,7 +1,29 @@
+import { useLocation, useNavigate } from 'react-router-dom';
 import { WHATSAPP_NUMBER } from '../config';
 
-export default function ProductPage({ product, onBack }) {
-  const { name, country, league, team, price, promoPrice, image, sizes = [] } = product;
+export default function ProductPage() {
+  const { state } = useLocation();
+  const navigate = useNavigate();
+  const product = state?.product;
+
+  if (!product) {
+    return (
+      <main className="max-w-5xl mx-auto px-6 pt-28 pb-12 text-center">
+        <p className="text-sm font-bold uppercase tracking-widest mb-6" style={{ color: 'rgba(255,255,255,0.4)' }}>
+          Produto não encontrado.
+        </p>
+        <button
+          onClick={() => navigate('/')}
+          className="text-xs font-black uppercase tracking-widest hover:text-white transition"
+          style={{ color: 'rgba(255,255,255,0.4)' }}
+        >
+          <i className="fa-solid fa-arrow-left mr-2" /> Voltar ao Catálogo
+        </button>
+      </main>
+    );
+  }
+
+  const { name, country, league, team, price, promoPrice, novo, image, sizes = [] } = product;
 
   function buyOnWhatsApp() {
     const sizesInfo = sizes.length > 0
@@ -45,6 +67,14 @@ export default function ProductPage({ product, onBack }) {
                   style={{ background: 'rgba(255,68,68,0.15)', color: '#ff4444', border: '1px solid rgba(255,68,68,0.3)' }}
                 >
                   Promo
+                </span>
+              )}
+              {novo && (
+                <span
+                  className="text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full"
+                  style={{ background: 'rgba(37,211,102,0.15)', color: '#25D366', border: '1px solid rgba(37,211,102,0.3)' }}
+                >
+                  Novo
                 </span>
               )}
             </div>

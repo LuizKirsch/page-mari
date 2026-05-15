@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import './index.css';
 import { useSheetData } from './hooks/useSheetData';
 import { WHATSAPP_NUMBER } from './config';
@@ -14,7 +15,7 @@ const DEFAULT_FILTERS = { country: 'all', league: 'all', team: 'all' };
 export default function App() {
   const { products, loading, error } = useSheetData();
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
-  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [sort, setSort] = useState('default');
 
   function handleFilterChange(next) {
     setFilters((prev) => ({ ...prev, ...next }));
@@ -22,47 +23,53 @@ export default function App() {
 
   function resetFilters() {
     setFilters(DEFAULT_FILTERS);
+    setSort('default');
   }
 
   return (
     <>
       {loading && <LoadingOverlay />}
 
-      <Navbar onBack={selectedProduct ? () => setSelectedProduct(null) : null} />
+      <Navbar />
 
-      {selectedProduct ? (
-        <ProductPage product={selectedProduct} onBack={() => setSelectedProduct(null)} />
-      ) : (
-        <>
-          <Hero />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <>
+              <Hero />
+              <main id="shop" className="max-w-7xl mx-auto px-6 py-20">
+                {error && (
+                  <div
+                    className="mb-8 px-4 py-3 rounded-xl text-xs font-bold border"
+                    style={{ background: 'rgba(255,80,80,0.08)', borderColor: 'rgba(255,80,80,0.2)', color: '#ff5050' }}
+                  >
+                    Erro ao carregar planilha: {error}. Exibindo dados de exemplo.
+                  </div>
+                )}
+                <Filters
+                  products={products}
+                  filters={filters}
+                  onChange={handleFilterChange}
+                  onReset={resetFilters}
+                  sort={sort}
+                  onSort={setSort}
+                />
+                <ProductGrid
+                  products={products}
+                  filters={filters}
+                  sort={sort}
+                />
+              </main>
+            </>
+          }
+        />
+        <Route
+          path="/produto/:slug"
+          element={<ProductPage products={products} />}
+        />
+      </Routes>
 
-          <main id="shop" className="max-w-7xl mx-auto px-6 py-20">
-            {error && (
-              <div
-                className="mb-8 px-4 py-3 rounded-xl text-xs font-bold border"
-                style={{ background: 'rgba(255,80,80,0.08)', borderColor: 'rgba(255,80,80,0.2)', color: '#ff5050' }}
-              >
-                Erro ao carregar planilha: {error}. Exibindo dados de exemplo.
-              </div>
-            )}
-
-            <Filters
-              products={products}
-              filters={filters}
-              onChange={handleFilterChange}
-              onReset={resetFilters}
-            />
-
-            <ProductGrid
-              products={products}
-              filters={filters}
-              onSelectProduct={setSelectedProduct}
-            />
-          </main>
-        </>
-      )}
-
-      {/* Botão flutuante WhatsApp */}
       <a
         href={`https://wa.me/${WHATSAPP_NUMBER}`}
         target="_blank"

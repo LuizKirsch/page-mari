@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-export default function Filters({ products, filters, onChange, onReset }) {
+export default function Filters({ products, filters, onChange, onReset, sort, onSort }) {
   const { country, league, team } = filters;
 
   const countries = useMemo(() => {
@@ -51,13 +51,23 @@ export default function Filters({ products, filters, onChange, onReset }) {
         <h2 className="text-4xl font-black italic uppercase tracking-tighter">
           Filtros Inteligentes
         </h2>
-        <button
-          onClick={onReset}
-          className="text-[10px] font-black uppercase tracking-widest transition hover:text-[#25D366]"
-          style={{ color: 'rgba(255,255,255,0.3)' }}
-        >
-          <i className="fa-solid fa-sync-alt mr-1" /> Limpar Filtros
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => onSort(sort === 'asc' ? 'desc' : 'asc')}
+            className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest px-3 py-2 rounded-lg transition hover:bg-white/10"
+            style={{ color: sort !== 'default' ? '#25D366' : 'rgba(255,255,255,0.4)', border: `1px solid ${sort !== 'default' ? 'rgba(37,211,102,0.3)' : 'rgba(255,255,255,0.1)'}` }}
+          >
+            <i className={`fa-solid fa-arrow-${sort === 'desc' ? 'down' : 'up'}-wide-short`} />
+            Preço {sort === 'desc' ? 'Maior' : 'Menor'}
+          </button>
+          <button
+            onClick={onReset}
+            className="text-[10px] font-black uppercase tracking-widest transition hover:text-[#25D366]"
+            style={{ color: 'rgba(255,255,255,0.3)' }}
+          >
+            <i className="fa-solid fa-sync-alt mr-1" /> Limpar
+          </button>
+        </div>
       </div>
 
       <div

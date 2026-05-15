@@ -1,9 +1,25 @@
+import { useNavigate } from 'react-router-dom';
 import { WHATSAPP_NUMBER } from '../config';
 
-export default function ProductCard({ product, onClick }) {
-  const { name, country, league, team, price, promoPrice, image, sizes = [] } = product;
+function toSlug(str) {
+  return str
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}
 
-  function buyOnWhatsApp() {
+export default function ProductCard({ product }) {
+  const { id, name, country, league, team, price, promoPrice, novo, image, sizes = [] } = product;
+  const navigate = useNavigate();
+
+  function goToProduct() {
+    navigate(`/produto/${id}-${toSlug(name)}`, { state: { product } });
+  }
+
+  function buyOnWhatsApp(e) {
+    e.stopPropagation();
     const sizesInfo = sizes.length > 0
       ? `Tamanhos disponíveis: *${sizes.join(', ')}*`
       : 'Sem tamanhos informados';
@@ -17,7 +33,7 @@ export default function ProductCard({ product, onClick }) {
     <div
       className="product-card group rounded-2xl p-4 border cursor-pointer hover:border-white/20 transition-all"
       style={{ background: '#0a0a0a', borderColor: 'rgba(255,255,255,0.05)' }}
-      onClick={onClick}
+      onClick={goToProduct}
     >
       <div
         className="rounded-xl overflow-hidden mb-4 relative"
@@ -46,6 +62,14 @@ export default function ProductCard({ product, onClick }) {
               Promo
             </span>
           )}
+          {novo && (
+            <span
+              className="text-[8px] font-black px-2 py-1 rounded italic uppercase"
+              style={{ background: '#25D366', color: '#000' }}
+            >
+              Novo
+            </span>
+          )}
         </div>
       </div>
 
@@ -54,7 +78,6 @@ export default function ProductCard({ product, onClick }) {
         {league} • {team}
       </p>
 
-      {/* Tamanhos disponíveis */}
       <div className="flex gap-1 mb-4 flex-wrap">
         {['P', 'M', 'G', 'GG'].map((s) => {
           const available = sizes.includes(s);
@@ -87,7 +110,7 @@ export default function ProductCard({ product, onClick }) {
           )}
         </div>
         <button
-          onClick={(e) => { e.stopPropagation(); buyOnWhatsApp(); }}
+          onClick={buyOnWhatsApp}
           className="flex-1 py-2 rounded-lg font-black uppercase text-[9px] tracking-widest flex items-center justify-center gap-2 hover:scale-105 transition-all"
           style={{ background: '#25D366', color: '#000' }}
         >

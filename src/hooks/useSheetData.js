@@ -29,12 +29,13 @@ function parseCSV(csvText) {
   const clean = (v) => (v ?? '').replace(/^"|"$/g, '').trim();
   const hasSize = (v) => { const s = clean(v); return s !== '' && s !== '0'; };
 
-  return lines.slice(1).reduce((acc, line) => {
+  return lines.slice(1).reduce((acc, line, i) => {
     if (!line.trim()) return acc;
     const cols = splitLine(line);
     const ativo = clean(cols[11]);
     if (ativo === '0' || ativo.toLowerCase() === 'false') return acc;
     acc.push({
+      id: i + 2,
       name: clean(cols[0]),
       country: clean(cols[1]),
       league: clean(cols[2]),
@@ -48,6 +49,7 @@ function parseCSV(csvText) {
         hasSize(cols[9]) && 'G',
         hasSize(cols[10]) && 'GG',
       ].filter(Boolean),
+      novo: clean(cols[12]) === '1' || clean(cols[12]).toLowerCase() === 'true',
     });
     return acc;
   }, []);
