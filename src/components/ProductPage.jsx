@@ -14,7 +14,7 @@ export default function ProductPage({ product, onBack }) {
   }
 
   return (
-    <main className="max-w-5xl mx-auto px-6 py-12">
+    <main className="max-w-5xl mx-auto px-6 pt-28 pb-12">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         {/* Imagem */}
         <div className="rounded-2xl overflow-hidden" style={{ background: '#111' }}>
