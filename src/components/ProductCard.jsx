@@ -25,7 +25,7 @@ export default function ProductCard({ product }) {
         <img
           src={image}
           alt={name}
-          className="w-full h-full object-cover transition-all duration-500 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100"
+          className="w-full h-full object-cover transition-all duration-500"
           onError={(e) => {
             e.currentTarget.src = 'https://placehold.co/400x500/111/666?text=Imagem+Indisponivel';
           }}
