@@ -1,7 +1,7 @@
 import { WHATSAPP_NUMBER } from '../config';
 
 export default function ProductCard({ product, onClick }) {
-  const { name, country, league, team, price, image, sizes = [] } = product;
+  const { name, country, league, team, price, promoPrice, image, sizes = [] } = product;
 
   function buyOnWhatsApp() {
     const sizesInfo = sizes.length > 0
@@ -31,11 +31,21 @@ export default function ProductCard({ product, onClick }) {
             e.currentTarget.src = 'https://placehold.co/400x500/111/666?text=Imagem+Indisponivel';
           }}
         />
-        <div
-          className="absolute top-3 left-3 text-black text-[8px] font-black px-2 py-1 rounded italic uppercase"
-          style={{ background: '#fff' }}
-        >
-          {country}
+        <div className="absolute top-3 left-3 flex gap-1">
+          <span
+            className="text-black text-[8px] font-black px-2 py-1 rounded italic uppercase"
+            style={{ background: '#fff' }}
+          >
+            {country}
+          </span>
+          {promoPrice && (
+            <span
+              className="text-[8px] font-black px-2 py-1 rounded italic uppercase"
+              style={{ background: '#ff4444', color: '#fff' }}
+            >
+              Promo
+            </span>
+          )}
         </div>
       </div>
 
@@ -66,9 +76,18 @@ export default function ProductCard({ product, onClick }) {
       </div>
 
       <div className="flex items-center justify-between gap-2">
-        <p className="text-lg font-black italic"> {price}</p>
+        <div className="flex flex-col">
+          {promoPrice ? (
+            <>
+              <span className="text-xs line-through" style={{ color: 'rgba(255,255,255,0.35)' }}>{price}</span>
+              <span className="text-lg font-black italic" style={{ color: '#ff4444' }}>{promoPrice}</span>
+            </>
+          ) : (
+            <p className="text-lg font-black italic">{price}</p>
+          )}
+        </div>
         <button
-          onClick={buyOnWhatsApp}
+          onClick={(e) => { e.stopPropagation(); buyOnWhatsApp(); }}
           className="flex-1 py-2 rounded-lg font-black uppercase text-[9px] tracking-widest flex items-center justify-center gap-2 hover:scale-105 transition-all"
           style={{ background: '#25D366', color: '#000' }}
         >

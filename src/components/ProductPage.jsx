@@ -1,7 +1,7 @@
 import { WHATSAPP_NUMBER } from '../config';
 
 export default function ProductPage({ product, onBack }) {
-  const { name, country, league, team, price, image, sizes = [] } = product;
+  const { name, country, league, team, price, promoPrice, image, sizes = [] } = product;
 
   function buyOnWhatsApp() {
     const sizesInfo = sizes.length > 0
@@ -32,12 +32,22 @@ export default function ProductPage({ product, onBack }) {
         {/* Detalhes */}
         <div className="flex flex-col gap-6">
           <div>
-            <span
-              className="text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full"
-              style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.5)' }}
-            >
-              {country} • {league}
-            </span>
+            <div className="flex gap-2 flex-wrap">
+              <span
+                className="text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full"
+                style={{ background: 'rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.5)' }}
+              >
+                {country} • {league}
+              </span>
+              {promoPrice && (
+                <span
+                  className="text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full"
+                  style={{ background: 'rgba(255,68,68,0.15)', color: '#ff4444', border: '1px solid rgba(255,68,68,0.3)' }}
+                >
+                  Promo
+                </span>
+              )}
+            </div>
             <h1 className="mt-4 font-black uppercase italic leading-none tracking-tight" style={{ fontSize: 'clamp(1.8rem, 4vw, 2.8rem)' }}>
               {name}
             </h1>
@@ -75,7 +85,14 @@ export default function ProductPage({ product, onBack }) {
             className="rounded-2xl p-6 flex flex-col gap-4"
             style={{ background: '#0a0a0a', border: '1px solid rgba(255,255,255,0.06)' }}
           >
-            <p className="font-black italic" style={{ fontSize: '2rem' }}>{price}</p>
+            {promoPrice ? (
+              <div className="flex flex-col">
+                <span className="text-sm line-through" style={{ color: 'rgba(255,255,255,0.35)' }}>{price}</span>
+                <span className="font-black italic" style={{ fontSize: '2rem', color: '#ff4444' }}>{promoPrice}</span>
+              </div>
+            ) : (
+              <p className="font-black italic" style={{ fontSize: '2rem' }}>{price}</p>
+            )}
             <button
               onClick={buyOnWhatsApp}
               className="w-full py-4 rounded-xl font-black uppercase text-sm tracking-widest flex items-center justify-center gap-3 hover:scale-[1.02] transition-all"

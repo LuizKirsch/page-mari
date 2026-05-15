@@ -32,7 +32,7 @@ function parseCSV(csvText) {
   return lines.slice(1).reduce((acc, line) => {
     if (!line.trim()) return acc;
     const cols = splitLine(line);
-    const ativo = clean(cols[10]);
+    const ativo = clean(cols[11]);
     if (ativo === '0' || ativo.toLowerCase() === 'false') return acc;
     acc.push({
       name: clean(cols[0]),
@@ -40,12 +40,13 @@ function parseCSV(csvText) {
       league: clean(cols[2]),
       team: clean(cols[3]),
       price: clean(cols[4]),
-      image: clean(cols[5]),
+      promoPrice: clean(cols[5]) || null,
+      image: clean(cols[6]),
       sizes: [
-        hasSize(cols[6]) && 'P',
-        hasSize(cols[7]) && 'M',
-        hasSize(cols[8]) && 'G',
-        hasSize(cols[9]) && 'GG',
+        hasSize(cols[7]) && 'P',
+        hasSize(cols[8]) && 'M',
+        hasSize(cols[9]) && 'G',
+        hasSize(cols[10]) && 'GG',
       ].filter(Boolean),
     });
     return acc;
