@@ -25,16 +25,7 @@ export default function ProductCard({ product }) {
         <img
           src={image}
           alt={name}
-          className="w-full h-full object-cover transition-all duration-500"
-          style={{ filter: 'grayscale(100%)', opacity: 0.6 }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.filter = 'grayscale(0%)';
-            e.currentTarget.style.opacity = 1;
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.filter = 'grayscale(100%)';
-            e.currentTarget.style.opacity = 0.6;
-          }}
+          className="w-full h-full object-cover transition-all duration-500 grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100"
           onError={(e) => {
             e.currentTarget.src = 'https://placehold.co/400x500/111/666?text=Imagem+Indisponivel';
           }}
