@@ -1,10 +1,13 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { WHATSAPP_NUMBER } from '../config';
 
-export default function ProductPage() {
+export default function ProductPage({ products = [] }) {
   const { state } = useLocation();
+  const { slug } = useParams();
   const navigate = useNavigate();
-  const product = state?.product;
+
+  const idFromUrl = parseInt(slug?.split('-')[0], 10);
+  const product = state?.product || products.find((p) => p.id === idFromUrl);
 
   if (!product) {
     return (
