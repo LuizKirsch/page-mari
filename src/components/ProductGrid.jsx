@@ -3,7 +3,12 @@ import ProductCard from './ProductCard';
 
 function parsePrice(str) {
   if (!str) return 0;
-  return parseFloat(String(str).replace(/\./g, '').replace(',', '.')) || 0;
+  return parseFloat(
+    String(str)
+      .replace(/[^\d,.]/g, '')
+      .replace(/\./g, '')
+      .replace(',', '.')
+  ) || 0;
 }
 
 export default function ProductGrid({ products, filters, sort }) {

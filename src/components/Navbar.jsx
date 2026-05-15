@@ -12,7 +12,7 @@ export default function Navbar() {
         <div className="flex items-center gap-4">
           {isProductPage && (
             <button
-              onClick={() => navigate(-1)}
+              onClick={() => navigate('/')}
               className="flex items-center gap-2 text-xs font-black uppercase tracking-widest px-3 py-2 rounded-lg hover:bg-white/10 transition-all"
               style={{ color: 'rgba(255,255,255,0.7)' }}
             >
